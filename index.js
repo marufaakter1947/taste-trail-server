@@ -166,6 +166,52 @@ await categoriesCollection.updateOne(
 res.send({ success: true, message: "Category updated" });
 });
 
+// ================= REVIEWS =================
+app.post("/reviews", verifyJWT, async (req, res) => {
+const review = { ...req.body, status: "pending", createdAt: new Date() };
+await reviewsCollection.insertOne(review);
+res.send({ success: true, message: "Review submitted" });
+});
+
+
+app.get("/reviews", verifyJWT, verifyAdmin, async (req, res) => {
+const reviews = await reviewsCollection.find().toArray();
+res.send(reviews);
+});
+
+
+app.put("/reviews/:id/approve", verifyJWT, verifyAdmin, async (req, res) => {
+const { id } = req.params;
+await reviewsCollection.updateOne(
+{ _id: new ObjectId(id) },
+{ $set: { status: "approved" } }
+);
+res.send({ success: true, message: "Review approved" });
+});
+
+// ================= REVIEWS =================
+app.post("/reviews", verifyJWT, async (req, res) => {
+const review = { ...req.body, status: "pending", createdAt: new Date() };
+await reviewsCollection.insertOne(review);
+res.send({ success: true, message: "Review submitted" });
+});
+
+
+app.get("/reviews", verifyJWT, verifyAdmin, async (req, res) => {
+const reviews = await reviewsCollection.find().toArray();
+res.send(reviews);
+});
+
+
+app.put("/reviews/:id/approve", verifyJWT, verifyAdmin, async (req, res) => {
+const { id } = req.params;
+await reviewsCollection.updateOne(
+{ _id: new ObjectId(id) },
+{ $set: { status: "approved" } }
+);
+res.send({ success: true, message: "Review approved" });
+});
+
   } finally {
   }
 }
