@@ -133,6 +133,17 @@ app.get("/admin/recipes", async (req, res) => {
 const recipes = await recipesCollection.find().toArray();
 res.send(recipes);
 });
+
+app.get("/recipes/:id", async (req, res) => {
+  const recipe = await recipesCollection.findOne({ _id: new ObjectId(req.params.id) });
+  res.send(recipe);
+});
+
+// all users can see recipes
+app.get("/recipes", async (req, res) => {
+  const result = await recipesCollection.find().toArray();
+  res.send(result);
+});
 // Update Recipe
 app.put("/admin/recipes/:id", verifyJWT, verifyAdmin, async (req, res) => {
 const { id } = req.params;
@@ -219,27 +230,27 @@ res.send({ success: true, message: "Review approved" });
 });
 
 // ================= REVIEWS =================
-app.post("/reviews", verifyJWT, async (req, res) => {
-const review = { ...req.body, status: "pending", createdAt: new Date() };
-await reviewsCollection.insertOne(review);
-res.send({ success: true, message: "Review submitted" });
-});
+// app.post("/reviews", verifyJWT, async (req, res) => {
+// const review = { ...req.body, status: "pending", createdAt: new Date() };
+// await reviewsCollection.insertOne(review);
+// res.send({ success: true, message: "Review submitted" });
+// });
 
 
-app.get("/reviews", verifyJWT, verifyAdmin, async (req, res) => {
-const reviews = await reviewsCollection.find().toArray();
-res.send(reviews);
-});
+// app.get("/reviews", verifyJWT, verifyAdmin, async (req, res) => {
+// const reviews = await reviewsCollection.find().toArray();
+// res.send(reviews);
+// });
 
 
-app.put("/reviews/:id/approve", verifyJWT, verifyAdmin, async (req, res) => {
-const { id } = req.params;
-await reviewsCollection.updateOne(
-{ _id: new ObjectId(id) },
-{ $set: { status: "approved" } }
-);
-res.send({ success: true, message: "Review approved" });
-});
+// app.put("/reviews/:id/approve", verifyJWT, verifyAdmin, async (req, res) => {
+// const { id } = req.params;
+// await reviewsCollection.updateOne(
+// { _id: new ObjectId(id) },
+// { $set: { status: "approved" } }
+// );
+// res.send({ success: true, message: "Review approved" });
+// });
 
 // Meal planner 
 app.post("/meal-planner", verifyJWT, async (req, res) => {
