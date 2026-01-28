@@ -173,6 +173,28 @@ const categories = await categoriesCollection.find().toArray();
 res.send(categories);
 });
 
+
+// Cuisines
+app.post("/admin/cuisines", verifyJWT, verifyAdmin, async (req, res) => {
+  const cuisine = req.body;
+  await cuisinesCollection.insertOne(cuisine);
+  res.send({ success: true, message: "Cuisine created" });
+});
+
+app.put("/admin/cuisines/:id", verifyJWT, verifyAdmin, async (req, res) => {
+  const { id } = req.params;
+  await cuisinesCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: req.body }
+  );
+  res.send({ success: true, message: "Cuisine updated" });
+});
+
+app.get("/cuisines", async (req, res) => {
+  const cuisines = await cuisinesCollection.find().toArray();
+  res.send(cuisines);
+});
+
 // ================= REVIEWS =================
 app.post("/reviews", verifyJWT, async (req, res) => {
 const review = { ...req.body, status: "pending", createdAt: new Date() };
