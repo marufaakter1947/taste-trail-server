@@ -128,6 +128,22 @@ app.get("/admin/recipes", async (req, res) => {
 const recipes = await recipesCollection.find().toArray();
 res.send(recipes);
 });
+// Update Recipe
+app.put("/admin/recipes/:id", verifyJWT, verifyAdmin, async (req, res) => {
+const { id } = req.params;
+await recipesCollection.updateOne(
+{ _id: new ObjectId(id) },
+{ $set: { ...req.body, updatedAt: new Date() } }
+);
+res.send({ success: true });
+});
+
+// Delete Recipe
+app.delete("/admin/recipes/:id", verifyJWT, verifyAdmin, async (req, res) => {
+const { id } = req.params;
+await recipesCollection.deleteOne({ _id: new ObjectId(id) });
+res.send({ success: true });
+});
 
   } finally {
   }
