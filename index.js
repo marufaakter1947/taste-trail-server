@@ -86,7 +86,8 @@ async function run() {
         { expiresIn: "7d" }
       );
 
-      res.send({ success: true, token, role: user.role });
+      res.send({ success: true, token, role: user.role,
+         photo: user.photo || "https://i.ibb.co/2kR1Y0F/default-avatar.png" });
     });
 
     // ================= CURRENT USER =================
