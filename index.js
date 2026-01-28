@@ -114,6 +114,21 @@ async function run() {
       res.send(users);
     });
 
+    // ================= ADMIN RECIPE MANAGEMENT =================
+// Create Recipe
+app.post("/admin/recipes", verifyJWT, verifyAdmin, async (req, res) => {
+const recipe = { ...req.body, createdAt: new Date(), updatedAt: new Date() };
+const result = await recipesCollection.insertOne(recipe);
+res.send({ success: true, recipeId: result.insertedId });
+});
+
+
+// Get All Recipes
+app.get("/admin/recipes", async (req, res) => {
+const recipes = await recipesCollection.find().toArray();
+res.send(recipes);
+});
+
   } finally {
   }
 }
