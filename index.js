@@ -160,12 +160,17 @@ res.send({ success: true, message: "Category created" });
 
 app.put("/admin/categories/:id", verifyJWT, verifyAdmin, async (req, res) => {
 const { id } = req.params;
-const updateData = req.body;
 await categoriesCollection.updateOne(
 { _id: new ObjectId(id) },
-{ $set: updateData }
+{ $set: req.body }
 );
 res.send({ success: true, message: "Category updated" });
+});
+
+
+app.get("/categories", async (req, res) => {
+const categories = await categoriesCollection.find().toArray();
+res.send(categories);
 });
 
 // ================= REVIEWS =================
