@@ -241,6 +241,19 @@ await reviewsCollection.updateOne(
 res.send({ success: true, message: "Review approved" });
 });
 
+// Meal planner 
+app.post("/meal-planner", verifyJWT, async (req, res) => {
+  const planner = { ...req.body, userId: req.user._id, createdAt: new Date() };
+  await mealPlannerCollection.insertOne(planner);
+  res.send({ success: true, message: "Meal plan saved" });
+});
+
+app.get("/meal-planner", verifyJWT, async (req, res) => {
+  const userId = req.user._id;
+  const plans = await mealPlannerCollection.find({ userId }).toArray();
+  res.send(plans);
+});
+
 // ================= RECOMMENDATIONS =================
 app.get("/recommendations", verifyJWT, async (req, res) => {
 const userEmail = req.user.email;
