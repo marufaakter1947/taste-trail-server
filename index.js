@@ -148,6 +148,24 @@ await recipesCollection.deleteOne({ _id: new ObjectId(id) });
 res.send({ success: true });
 });
 
+// ================= CATEGORY CRUD (ADMIN) =================
+app.post("/admin/categories", verifyJWT, verifyAdmin, async (req, res) => {
+const category = req.body;
+await categoriesCollection.insertOne(category);
+res.send({ success: true, message: "Category created" });
+});
+
+
+app.put("/admin/categories/:id", verifyJWT, verifyAdmin, async (req, res) => {
+const { id } = req.params;
+const updateData = req.body;
+await categoriesCollection.updateOne(
+{ _id: new ObjectId(id) },
+{ $set: updateData }
+);
+res.send({ success: true, message: "Category updated" });
+});
+
   } finally {
   }
 }
