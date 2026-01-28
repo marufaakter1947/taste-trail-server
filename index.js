@@ -28,6 +28,9 @@ async function run() {
   try {
     const db = client.db("tasteTrailDB");
     const usersCollection = db.collection("users");
+    const recipesCollection = db.collection("recipes");
+    const categoriesCollection = db.collection("categories");
+    const reviewsCollection = db.collection("reviews");
 
     // Verify Admin
     const verifyAdmin = async (req, res, next) => {
