@@ -212,6 +212,14 @@ await reviewsCollection.updateOne(
 res.send({ success: true, message: "Review approved" });
 });
 
+// ================= RECOMMENDATIONS =================
+app.get("/recommendations", verifyJWT, async (req, res) => {
+const userEmail = req.user.email;
+// Simplest logic: trending recipes
+const recipes = await recipesCollection.find().limit(12).toArray();
+res.send(recipes);
+});
+
   } finally {
   }
 }
