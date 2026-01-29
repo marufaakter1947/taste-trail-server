@@ -134,8 +134,23 @@ const recipes = await recipesCollection.find().toArray();
 res.send(recipes);
 });
 
+// app.get("/recipes/:id", async (req, res) => {
+//   const recipe = await recipesCollection.findOne({ _id: new ObjectId(req.params.id) });
+//   res.send(recipe);
+// });
 app.get("/recipes/:id", async (req, res) => {
-  const recipe = await recipesCollection.findOne({ _id: new ObjectId(req.params.id) });
+  console.log("ID FROM URL 👉", req.params.id);
+
+  const recipe = await recipesCollection.findOne({
+    _id: new ObjectId(req.params.id)
+  });
+
+  console.log("RECIPE FROM DB 👉", recipe);
+
+  if (!recipe) {
+    return res.status(404).send({ message: "Recipe not found" });
+  }
+
   res.send(recipe);
 });
 
